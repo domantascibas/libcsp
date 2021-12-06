@@ -313,13 +313,22 @@ int csp_route_work(uint32_t timeout) {
 	return CSP_ERR_NONE;
 }
 
-static CSP_DEFINE_TASK(csp_task_router) {
+bool csp_should_route_task_exit;
+bool csp_route_task_running;
 
+static CSP_DEFINE_TASK(csp_task_router) {
+	csp_should_route_task_exit = false;
+	csp_route_task_running = true;
 	/* Here there be routing */
 	while (1) {
-		csp_route_work(FIFO_TIMEOUT);
+		if (csp_should_route_task_exit)
+			break;
+		csp_route_work(100);
 	}
 
+	csp_route_task_running = false;
+	csp_thread_exit();
+	
 	return CSP_TASK_RETURN;
 
 }

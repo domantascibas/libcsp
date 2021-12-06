@@ -39,6 +39,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 extern "C" {
 #endif
 
+extern bool csp_should_route_task_exit;
+extern bool csp_route_task_running;
+
 /**
    CSP configuration.
    @see csp_init()
